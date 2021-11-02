@@ -26,14 +26,22 @@
         >
           저장
         </v-btn>
+        <v-btn
+          color="blue darken-1"
+          text
+          @click="toHome"
+        >
+          홈으로
+        </v-btn>
       </v-card-actions>
     </v-card>
 </template>
 
 <script>
+import dialog from '../utils/dialog.js'
 import { sync } from 'vuex-pathify'
 export default {
-  name: "home",
+  name: "Test",
   data() {
     return {
       inputValue: '',
@@ -42,7 +50,7 @@ export default {
   methods: {
     save() {
       if (!this.inputValue) {
-        alert('메뉴명을 입력해주세요')
+        dialog.makeDialog({text: "메뉴명을 입력해주세요"})
         return
       }
       this.items.push({
@@ -50,9 +58,15 @@ export default {
           to : '/',
           icon: 'mdi-account'
       })
-      alert('메뉴가 추가되었습니다')
+      dialog.makeDialog({text: "메뉴가 추가되었습니다."})
       this.inputValue = ''
-
+    },
+    toHome() {
+      dialog.makeDialog({text: "홈으로 이동하시겠습니까?", question: true, callback: this.routerHome})
+    },
+    routerHome() {
+      this.$router.push("/")
+      dialog.makeDialog({text: "홈으로 이동되었습니다.", delay: 100})
     }
   },
   computed: {
